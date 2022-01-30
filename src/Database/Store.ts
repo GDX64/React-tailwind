@@ -19,6 +19,12 @@ class AppStore {
     await this.dataBase.contacts.bulkPut(this.state.contacts);
     return { ...this.state };
   }
+
+  async addContact(contact: Contact) {
+    this.state.contacts = [...this.state.contacts, contact];
+    await this.dataBase.contacts.bulkPut(this.state.contacts);
+    return { ...this.state };
+  }
 }
 
 export default new AppStore();

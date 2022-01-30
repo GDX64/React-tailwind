@@ -7,6 +7,10 @@ export default class Contact {
     public id: number,
     public image: string | null
   ) {}
+
+  static default() {
+    return new Contact("Joe", "", "", "", Math.random(), "");
+  }
 }
 
 export function updateArray(contact: Contact, contacts: Contact[]) {

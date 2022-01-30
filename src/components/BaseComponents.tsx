@@ -10,7 +10,7 @@ export function UpdatableField({
   const [isNormal, changeField] = useState(true);
   const normalField = (
     <div
-      className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer mb-1 pr-1 pl-1 rounded-md transition-all"
+      className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer pr-1 pl-1 rounded-md transition-all w-full min-h-[20px]"
       onClick={() => changeField(!isNormal)}
     >
       {value}
@@ -28,7 +28,7 @@ export function UpdatableField({
       onChange={(event) => onChange(event?.target.value)}
       onBlur={() => changeField(true)}
       autoFocus
-      className="bg-gray-800 outline outline-cyan-400 mb-1 rounded-md"
+      className="bg-gray-800 outline outline-cyan-400 rounded-md"
     />
   );
   return isNormal ? normalField : editField;

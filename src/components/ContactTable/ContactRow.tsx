@@ -39,9 +39,10 @@ function ContactSummary({
     >
       <Avatar
         dataURL={contact.image}
-        onClick={() =>
-          readImage().then((image) => onChange({ ...contact, image }))
-        }
+        onClick={(event) => {
+          event.stopPropagation();
+          readImage().then((image) => onChange({ ...contact, image }));
+        }}
       ></Avatar>
       <div className="">{contact.name}</div>
       <div className="">{contact.email}</div>
@@ -113,6 +114,24 @@ export function ContactsTable() {
           }
         ></ContactRow>
       ))}
+      <div className="w-full flex items-center justify-center">
+        <PlusBtn
+          onClick={async () => {
+            setContacts(await Store.addContact(Contact.default()));
+          }}
+        ></PlusBtn>
+      </div>
     </div>
+  );
+}
+
+function PlusBtn({ onClick = () => {} }) {
+  return (
+    <button
+      onClick={onClick}
+      className="rounded-full bg-gray-700 h-8 w-8 text-xl hover:scale-110 transition-all hover:bg-gray-600"
+    >
+      <div className="">+</div>
+    </button>
   );
 }
