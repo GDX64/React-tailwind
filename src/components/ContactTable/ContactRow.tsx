@@ -6,8 +6,9 @@ import { Labeled, UpdatableField, Avatar, BaseBtn } from "../BaseComponents";
 interface ContactRowProps {
   Contact: Contact;
   onChange: (state: Contact) => void;
+  onDelete: (state: Contact) => void;
 }
-function ContactRow({ Contact, onChange }: ContactRowProps) {
+function ContactRow({ Contact, onChange, onDelete }: ContactRowProps) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="flex flex-col mb-2">
@@ -17,7 +18,7 @@ function ContactRow({ Contact, onChange }: ContactRowProps) {
         onChange={onChange}
       ></ContactSummary>
       {expanded && (
-        <ContactFullInfo {...{ Contact, onChange }}></ContactFullInfo>
+        <ContactFullInfo {...{ Contact, onChange, onDelete }}></ContactFullInfo>
       )}
     </div>
   );
@@ -44,13 +45,17 @@ function ContactSummary({
           readImage().then((image) => onChange({ ...contact, image }));
         }}
       ></Avatar>
-      <div className="">{contact.name}</div>
-      <div className="">{contact.email}</div>
+      <div className="w-40 overflow-x-hidden overflow-ellipsis whitespace-nowrap">
+        {contact.name}
+      </div>
+      <div className="w-36 overflow-x-hidden overflow-ellipsis whitespace-nowrap">
+        {contact.phone}
+      </div>
     </div>
   );
 }
 
-function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
+function ContactFullInfo({ Contact, onChange, onDelete }: ContactRowProps) {
   const [state, updateValue] = useState(Contact);
   const hasChanges = JSON.stringify(Contact) !== JSON.stringify(state);
   const fields = getAllFields(state, updateValue);
@@ -62,6 +67,7 @@ function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
         hasChanges={hasChanges}
         onCancel={() => updateValue(Contact)}
         onApply={() => onChange(state)}
+        onDelete={() => onDelete(state)}
       ></Footer>
     </div>
   );
@@ -88,14 +94,18 @@ function Footer({
   onApply = () => {},
   hasChanges = false,
   onCancel = () => {},
+  onDelete = () => {},
 }) {
   return (
     <div className="">
-      <BaseBtn onClick={onApply} isDisabled={!hasChanges} className="m-2">
+      <BaseBtn onClick={onApply} isDisabled={!hasChanges} className="m-2 w-16">
         Save
       </BaseBtn>
-      <BaseBtn onClick={onCancel} isDisabled={!hasChanges}>
+      <BaseBtn onClick={onCancel} isDisabled={!hasChanges} className="m-2 w-16">
         Cancel
+      </BaseBtn>
+      <BaseBtn onClick={onDelete} className="m-2 w-16">
+        Delete
       </BaseBtn>
     </div>
   );
@@ -112,6 +122,9 @@ export function ContactsTable() {
           onChange={async (contact) =>
             setContacts(await Store.updateContacts(contact))
           }
+          onDelete={async (contact) => {
+            setContacts(await Store.deleteContact(contact));
+          }}
         ></ContactRow>
       ))}
       <div className="w-full flex items-center justify-center">

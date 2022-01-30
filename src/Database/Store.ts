@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Contact, { makeFake, updateArray } from "../Entities/Contact";
 import AppDatabase from "./AppDatabase";
 
@@ -23,6 +22,14 @@ class AppStore {
   async addContact(contact: Contact) {
     this.state.contacts = [...this.state.contacts, contact];
     await this.dataBase.contacts.bulkPut(this.state.contacts);
+    return { ...this.state };
+  }
+
+  async deleteContact(contact: Contact) {
+    this.state.contacts = this.state.contacts.filter(
+      (element) => element.id !== contact.id
+    );
+    await this.dataBase.contacts.delete(contact.id);
     return { ...this.state };
   }
 }
