@@ -12,7 +12,7 @@ function ContactRow({ Contact, onChange }: ContactRowProps) {
   return (
     <div className="flex flex-col mb-2">
       <ContactSummary
-        Contact={Contact}
+        contact={Contact}
         onClick={() => setExpanded(!expanded)}
       ></ContactSummary>
       {expanded && (
@@ -23,19 +23,20 @@ function ContactRow({ Contact, onChange }: ContactRowProps) {
 }
 
 function ContactSummary({
-  Contact,
+  contact,
   onClick,
 }: {
-  Contact: Contact;
+  contact: Contact;
   onClick: () => void;
 }) {
   return (
     <div
-      className="flex w-96 border-2 border-sky-800 justify-around cursor-pointer select-none"
+      className="flex w-96 border-2 border-sky-800 justify-around cursor-pointer select-none pt-1 pb-1 items-center"
       onClick={onClick}
     >
-      <div className="">{Contact.name}</div>
-      <div className="">{Contact.email}</div>
+      <Avatar dataURL={contact.image}></Avatar>
+      <div className="">{contact.name}</div>
+      <div className="">{contact.email}</div>
     </div>
   );
 }
@@ -66,7 +67,11 @@ function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
 function getAllFields(state: Contact, updateValue: (contact: Contact) => void) {
   return fieldsArr.map(({ field, label }) => {
     return (
-      <Labeled label={label} key={field}>
+      <Labeled
+        label={label}
+        key={field}
+        className="border-b border-b-sky-800 w-full h-10 items-center"
+      >
         <UpdatableField
           value={state[field]}
           onChange={(value) => updateValue({ ...state, [field]: value })}

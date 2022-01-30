@@ -10,7 +10,7 @@ export function UpdatableField({
   const [isNormal, changeField] = useState(true);
   const normalField = (
     <div
-      className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer mb-1"
+      className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer mb-1 pr-1 pl-1 rounded-md transition-all"
       onClick={() => changeField(!isNormal)}
     >
       {value}
@@ -37,13 +37,15 @@ export function UpdatableField({
 export function Labeled({
   children,
   label,
+  className = "",
 }: {
   children: JSX.Element;
   label: string;
+  className?: string;
 }) {
   return (
-    <div className="flex">
-      <label className="mr-1 text-gray-500">{label}:</label>
+    <div className={`flex ${className}`}>
+      <label className={`mr-1 text-gray-500`}>{label}:</label>
       {children}
     </div>
   );
@@ -51,15 +53,15 @@ export function Labeled({
 
 export function Avatar({
   dataURL,
-  onClick,
+  onClick = () => {},
 }: {
   dataURL?: string | null;
-  onClick: () => void;
+  onClick?: (event: React.MouseEvent<HTMLImageElement, MouseEvent>) => void;
 }) {
   return (
     <img
       src={dataURL ?? ""}
-      className="w-10 h-10 rounded-full cursor-pointer"
+      className="w-10 h-10 rounded-full cursor-pointer hover:brightness-125 transition-all"
       onClick={onClick}
     ></img>
   );
