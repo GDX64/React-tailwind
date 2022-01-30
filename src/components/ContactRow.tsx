@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Contact, { fieldsArr } from "../Entities/Contact";
-import { Labeled, UpdatableField } from "./BaseComponents";
-
+import { readImage } from "../Utils/ReadImage";
+import { Labeled, UpdatableField, Avatar } from "./BaseComponents";
 interface ContactRowProps {
   Contact: Contact;
   onChange: (state: Contact) => void;
@@ -41,12 +41,17 @@ function ContactSummary({
 
 function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
   const [state, updateValue] = useState(Contact);
+  const [image, setImage] = useState(null as null | string);
   const hasChanges = JSON.stringify(Contact) !== JSON.stringify(state);
   const fields = getAllFields(state, updateValue);
   return (
     <div className="flex flex-col">
       <div className="flex flex-col"></div>
       {fields}
+      <Avatar
+        onClick={() => readImage().then(setImage)}
+        dataURL={image}
+      ></Avatar>
       <Footer
         hasChanges={hasChanges}
         onCancel={() => updateValue(Contact)}

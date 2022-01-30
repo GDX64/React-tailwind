@@ -48,3 +48,19 @@ export function Labeled({
     </div>
   );
 }
+
+export function Avatar({
+  dataURL,
+  onClick,
+}: {
+  dataURL?: string | null;
+  onClick: () => void;
+}) {
+  return (
+    <img
+      src={dataURL ?? ""}
+      className="w-10 h-10 rounded-full cursor-pointer"
+      onClick={onClick}
+    ></img>
+  );
+}
