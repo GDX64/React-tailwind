@@ -1,46 +1,46 @@
 import { useState } from "react";
-import Contract from "../Entities/Contract";
+import Contact from "../Entities/Contact";
 
-interface ContractRowProps {
-  contract: Contract;
-  onChange: (state: Contract) => void;
+interface ContactRowProps {
+  Contact: Contact;
+  onChange: (state: Contact) => void;
 }
-function ContractRow({ contract, onChange }: ContractRowProps) {
+function ContactRow({ Contact, onChange }: ContactRowProps) {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className="flex flex-col mb-2">
-      <ContractSummary
-        contract={contract}
+      <ContactSummary
+        Contact={Contact}
         onClick={() => setExpanded(!expanded)}
-      ></ContractSummary>
+      ></ContactSummary>
       {expanded && (
-        <ContractFullInfo {...{ contract, onChange }}></ContractFullInfo>
+        <ContactFullInfo {...{ Contact, onChange }}></ContactFullInfo>
       )}
     </div>
   );
 }
 
-function ContractSummary({
-  contract,
+function ContactSummary({
+  Contact,
   onClick,
 }: {
-  contract: Contract;
+  Contact: Contact;
   onClick: () => void;
 }) {
   return (
     <div
-      className="flex w-96 border border-black justify-around cursor-pointer select-none"
+      className="flex w-96 border-2 border-sky-800 justify-around cursor-pointer select-none"
       onClick={onClick}
     >
-      <div className="">{contract.name}</div>
-      <div className="">{contract.email}</div>
+      <div className="">{Contact.name}</div>
+      <div className="">{Contact.email}</div>
     </div>
   );
 }
 
-function ContractFullInfo({ contract, onChange }: ContractRowProps) {
-  const [state, updateValue] = useState(contract);
-  const hasChanges = JSON.stringify(contract) !== JSON.stringify(state);
+function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
+  const [state, updateValue] = useState(Contact);
+  const hasChanges = JSON.stringify(Contact) !== JSON.stringify(state);
   return (
     <div className="flex flex-col">
       <div className="flex flex-col">
@@ -55,7 +55,7 @@ function ContractFullInfo({ contract, onChange }: ContractRowProps) {
       </div>
       <Footer
         hasChanges={hasChanges}
-        onCancel={() => updateValue(contract)}
+        onCancel={() => updateValue(Contact)}
         onApply={() => onChange(state)}
       ></Footer>
     </div>
@@ -97,18 +97,18 @@ function BaseBtn({
   );
 }
 
-export function ContractsTable({
-  contracts = [] as Contract[],
-  onChange = (state: Contract) => {},
+export function ContactsTable({
+  Contacts = [] as Contact[],
+  onChange = (state: Contact) => {},
 }) {
   return (
     <div className="bg-sky-900 text-gray-300 pl-3 pr-3 pt-3 pb-3 rounded-md">
-      {contracts.map((contract) => (
-        <ContractRow
-          contract={contract}
-          key={contract.id}
+      {Contacts.map((Contact) => (
+        <ContactRow
+          Contact={Contact}
+          key={Contact.id}
           onChange={onChange}
-        ></ContractRow>
+        ></ContactRow>
       ))}
     </div>
   );

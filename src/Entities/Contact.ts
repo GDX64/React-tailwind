@@ -1,4 +1,4 @@
-export default class Contract {
+export default class Contact {
   constructor(
     public name: string,
     public lastName: string,
@@ -9,7 +9,7 @@ export default class Contract {
 
 export function makeFake() {
   return [
-    new Contract("Gabriel", "Machado", "gadu.machado@gmail.com", 0),
-    new Contract("Gabriel", "Machado", "gadu.machado@gmail.com", 1),
+    new Contact("Gabriel", "Machado", "gadu.machado@gmail.com", 0),
+    new Contact("Gabriel", "Machado", "gadu.machado@gmail.com", 1),
   ];
 }

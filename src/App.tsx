@@ -1,19 +1,19 @@
 import { useState } from "react";
 import "./App.css";
-import { ContractsTable } from "./components/ContractRow";
-import Contract, { makeFake } from "./Entities/Contract";
+import { ContactsTable } from "./components/ContactRow";
+import Contact, { makeFake } from "./Entities/Contact";
 
 const store = {
-  contracts: makeFake(),
+  Contacts: makeFake(),
 };
 
-function updateContracts(contract: Contract) {
-  console.log(contract);
-  const index = store.contracts.findIndex(
-    (element) => element.id === contract.id
+function updateContacts(Contact: Contact) {
+  console.log(Contact);
+  const index = store.Contacts.findIndex(
+    (element) => element.id === Contact.id
   );
   if (index !== -1) {
-    store.contracts[index] = contract;
+    store.Contacts[index] = Contact;
   }
   return { ...store };
 }
@@ -22,10 +22,10 @@ function App() {
   const [state, updateState] = useState(store);
   return (
     <div className="App flex flex-col items-center">
-      <ContractsTable
-        contracts={state.contracts}
-        onChange={(contract) => updateState(updateContracts(contract))}
-      ></ContractsTable>
+      <ContactsTable
+        Contacts={state.Contacts}
+        onChange={(Contact) => updateState(updateContacts(Contact))}
+      ></ContactsTable>
     </div>
   );
 }
