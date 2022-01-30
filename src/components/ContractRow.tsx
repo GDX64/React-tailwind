@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Contract from "../Entities/Contract";
 import "./BaseButton.css";
-function ContractRow({ contract }: { contract: Contract }) {
+
+interface ContractRowProps {
+  contract: Contract;
+  onChange: (state: Contract) => void;
+}
+function ContractRow({ contract, onChange }: ContractRowProps) {
   const [state, updateValue] = useState(contract);
   const hasChanges = JSON.stringify(contract) !== JSON.stringify(state);
   return (
@@ -19,6 +24,7 @@ function ContractRow({ contract }: { contract: Contract }) {
       <Footer
         hasChanges={hasChanges}
         onCancel={() => updateValue(contract)}
+        onApply={() => onChange(state)}
       ></Footer>
     </div>
   );
@@ -31,25 +37,46 @@ function Footer({
 }) {
   return (
     <div className="">
-      {hasChanges && <BaseBtn onClick={onApply}>Apply Changes</BaseBtn>}
-      {hasChanges && <BaseBtn onClick={onCancel}>Apply Changes</BaseBtn>}
+      <BaseBtn onClick={onApply} isDisabled={!hasChanges} className="m-2">
+        Apply Changes
+      </BaseBtn>
+      <BaseBtn onClick={onCancel} isDisabled={!hasChanges}>
+        CancelChanges
+      </BaseBtn>
     </div>
   );
 }
 
-function BaseBtn({ onClick = () => {}, children = "" }) {
+function BaseBtn({
+  onClick = () => {},
+  children = "",
+  isDisabled = false,
+  className = "",
+}) {
   return (
-    <button className="bg-gray-300 text-black rounded-sm" onClick={onClick}>
+    <button
+      className={`bg-gray-300 text-black rounded-md pr-2 pl-2 ${
+        isDisabled ? "opacity-50" : ""
+      } ${className}`}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
 }
 
-export function ContractsTable({ contracts = [] as Contract[] }) {
+export function ContractsTable({
+  contracts = [] as Contract[],
+  onChange = (state: Contract) => {},
+}) {
   return (
     <div className="">
       {contracts.map((contract) => (
-        <ContractRow contract={contract} key={contract.id}></ContractRow>
+        <ContractRow
+          contract={contract}
+          key={contract.id}
+          onChange={onChange}
+        ></ContractRow>
       ))}
     </div>
   );

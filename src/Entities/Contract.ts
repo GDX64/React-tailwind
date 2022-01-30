@@ -8,5 +8,8 @@ export default class Contract {
 }
 
 export function makeFake() {
-  return [new Contract("Gabriel", "Machado", "gadu.machado@gmail.com", 0)];
+  return [
+    new Contract("Gabriel", "Machado", "gadu.machado@gmail.com", 0),
+    new Contract("Gabriel", "Machado", "gadu.machado@gmail.com", 1),
+  ];
 }
