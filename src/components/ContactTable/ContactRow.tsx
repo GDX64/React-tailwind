@@ -14,6 +14,7 @@ function ContactRow({ Contact, onChange }: ContactRowProps) {
       <ContactSummary
         contact={Contact}
         onClick={() => setExpanded(!expanded)}
+        onChange={onChange}
       ></ContactSummary>
       {expanded && (
         <ContactFullInfo {...{ Contact, onChange }}></ContactFullInfo>
@@ -25,16 +26,23 @@ function ContactRow({ Contact, onChange }: ContactRowProps) {
 function ContactSummary({
   contact,
   onClick,
+  onChange,
 }: {
   contact: Contact;
   onClick: () => void;
+  onChange: (state: Contact) => void;
 }) {
   return (
     <div
       className="flex w-96 border-2 border-sky-800 justify-around cursor-pointer select-none pt-1 pb-1 items-center"
       onClick={onClick}
     >
-      <Avatar dataURL={contact.image}></Avatar>
+      <Avatar
+        dataURL={contact.image}
+        onClick={() =>
+          readImage().then((image) => onChange({ ...contact, image }))
+        }
+      ></Avatar>
       <div className="">{contact.name}</div>
       <div className="">{contact.email}</div>
     </div>
@@ -49,12 +57,6 @@ function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
     <div className="flex flex-col">
       <div className="flex flex-col"></div>
       {fields}
-      <Avatar
-        onClick={() =>
-          readImage().then((image) => updateValue({ ...state, image }))
-        }
-        dataURL={state.image}
-      ></Avatar>
       <Footer
         hasChanges={hasChanges}
         onCancel={() => updateValue(Contact)}
