@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Contact from "../Entities/Contact";
+import Contact, { fieldsArr } from "../Entities/Contact";
+import { Labeled, UpdatableField } from "./BaseComponents";
 
 interface ContactRowProps {
   Contact: Contact;
@@ -41,18 +42,11 @@ function ContactSummary({
 function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
   const [state, updateValue] = useState(Contact);
   const hasChanges = JSON.stringify(Contact) !== JSON.stringify(state);
+  const fields = getAllFields(state, updateValue);
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col">
-        <UpdatableField
-          value={state.name}
-          onChange={(value) => updateValue({ ...state, name: value })}
-        ></UpdatableField>
-        <UpdatableField
-          value={state.email}
-          onChange={(value) => updateValue({ ...state, email: value })}
-        ></UpdatableField>
-      </div>
+      <div className="flex flex-col"></div>
+      {fields}
       <Footer
         hasChanges={hasChanges}
         onCancel={() => updateValue(Contact)}
@@ -60,6 +54,19 @@ function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
       ></Footer>
     </div>
   );
+}
+
+function getAllFields(state: Contact, updateValue: (contact: Contact) => void) {
+  return fieldsArr.map(({ field, label }) => {
+    return (
+      <Labeled label={label} key={field}>
+        <UpdatableField
+          value={state[field]}
+          onChange={(value) => updateValue({ ...state, [field]: value })}
+        ></UpdatableField>
+      </Labeled>
+    );
+  });
 }
 
 function Footer({
@@ -70,7 +77,7 @@ function Footer({
   return (
     <div className="">
       <BaseBtn onClick={onApply} isDisabled={!hasChanges} className="m-2">
-        Apply
+        Save
       </BaseBtn>
       <BaseBtn onClick={onCancel} isDisabled={!hasChanges}>
         Cancel
@@ -102,7 +109,7 @@ export function ContactsTable({
   onChange = (state: Contact) => {},
 }) {
   return (
-    <div className="bg-sky-900 text-gray-300 pl-3 pr-3 pt-3 pb-3 rounded-md">
+    <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md">
       {Contacts.map((Contact) => (
         <ContactRow
           Contact={Contact}
@@ -112,32 +119,4 @@ export function ContactsTable({
       ))}
     </div>
   );
-}
-
-function UpdatableField({ value = "", onChange = (x: string) => {} }) {
-  const [isNormal, changeField] = useState(true);
-  const normalField = (
-    <div
-      className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer mb-1"
-      onClick={() => changeField(!isNormal)}
-    >
-      {value}
-    </div>
-  );
-  const editField = (
-    <input
-      type="text"
-      value={value}
-      onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          changeField(!isNormal);
-        }
-      }}
-      onChange={(event) => onChange(event?.target.value)}
-      onBlur={() => changeField(true)}
-      autoFocus
-      className="bg-gray-800 outline outline-cyan-400 mb-1 rounded-md"
-    />
-  );
-  return isNormal ? normalField : editField;
 }
