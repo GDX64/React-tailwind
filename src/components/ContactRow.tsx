@@ -41,7 +41,6 @@ function ContactSummary({
 
 function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
   const [state, updateValue] = useState(Contact);
-  const [image, setImage] = useState(null as null | string);
   const hasChanges = JSON.stringify(Contact) !== JSON.stringify(state);
   const fields = getAllFields(state, updateValue);
   return (
@@ -49,8 +48,10 @@ function ContactFullInfo({ Contact, onChange }: ContactRowProps) {
       <div className="flex flex-col"></div>
       {fields}
       <Avatar
-        onClick={() => readImage().then(setImage)}
-        dataURL={image}
+        onClick={() =>
+          readImage().then((image) => updateValue({ ...state, image }))
+        }
+        dataURL={state.image}
       ></Avatar>
       <Footer
         hasChanges={hasChanges}

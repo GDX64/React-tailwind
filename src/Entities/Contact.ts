@@ -4,7 +4,8 @@ export default class Contact {
     public lastName: string,
     public email: string,
     public phone: string,
-    public id: number
+    public id: number,
+    public image: string | null
   ) {}
 }
 
@@ -13,13 +14,27 @@ export const fieldsArr = [
   { field: "phone", label: "phone" },
   { field: "email", label: "email" },
 ] as {
-  field: keyof Contact;
+  field: "name" | "phone" | "email";
   label: string;
 }[];
 
 export function makeFake() {
   return [
-    new Contact("Gabriel", "Machado", "gadu.machado@gmail.com", "122345678", 0),
-    new Contact("Gabriel", "Machado", "gadu.machado@gmail.com", "122345678", 1),
+    new Contact(
+      "Gabriel",
+      "Machado",
+      "gadu.machado@gmail.com",
+      "122345678",
+      0,
+      null
+    ),
+    new Contact(
+      "Gabriel",
+      "Machado",
+      "gadu.machado@gmail.com",
+      "122345678",
+      1,
+      null
+    ),
   ];
 }
