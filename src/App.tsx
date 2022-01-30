@@ -1,30 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { ContactsTable } from "./components/ContactRow";
-import Contact, { makeFake } from "./Entities/Contact";
+import AppStore from "./Database/Store";
 
-const store = {
-  Contacts: makeFake(),
-};
+function App({ store }: { store: AppStore }) {
+  const [state, updateState] = useState(store.state);
+  useEffect(() => {
+    store.getStored().then((state) => updateState(state));
+  }, []);
 
-function updateContacts(Contact: Contact) {
-  console.log(Contact);
-  const index = store.Contacts.findIndex(
-    (element) => element.id === Contact.id
-  );
-  if (index !== -1) {
-    store.Contacts[index] = Contact;
-  }
-  return { ...store };
-}
-
-function App() {
-  const [state, updateState] = useState(store);
   return (
     <div className="App flex flex-col items-center">
       <ContactsTable
-        Contacts={state.Contacts}
-        onChange={(Contact) => updateState(updateContacts(Contact))}
+        Contacts={state.contacts}
+        onChange={async (Contact) =>
+          updateState(await store.updateContacts(Contact))
+        }
       ></ContactsTable>
     </div>
   );
