@@ -1,7 +1,8 @@
 import { useState } from "react";
-import Contact, { fieldsArr } from "../Entities/Contact";
-import { readImage } from "../Utils/ReadImage";
-import { Labeled, UpdatableField, Avatar } from "./BaseComponents";
+import Store from "../../Database/Store";
+import Contact, { fieldsArr, updateArray } from "../../Entities/Contact";
+import { readImage } from "../../Utils/ReadImage";
+import { Labeled, UpdatableField, Avatar, BaseBtn } from "../BaseComponents";
 interface ContactRowProps {
   Contact: Contact;
   onChange: (state: Contact) => void;
@@ -92,35 +93,17 @@ function Footer({
   );
 }
 
-function BaseBtn({
-  onClick = () => {},
-  children = "",
-  isDisabled = false,
-  className = "",
-}) {
-  return (
-    <button
-      className={`bg-gray-300 text-cyan-800 font-bold rounded-md pr-2 pl-2  ${
-        isDisabled ? "opacity-50" : ""
-      } ${className}`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-}
-
-export function ContactsTable({
-  Contacts = [] as Contact[],
-  onChange = (state: Contact) => {},
-}) {
+export function ContactsTable() {
+  const [{ contacts }, setContacts] = useState(Store.state);
   return (
     <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md">
-      {Contacts.map((Contact) => (
+      {contacts.map((Contact) => (
         <ContactRow
           Contact={Contact}
           key={Contact.id}
-          onChange={onChange}
+          onChange={async (contact) =>
+            setContacts(await Store.updateContacts(contact))
+          }
         ></ContactRow>
       ))}
     </div>

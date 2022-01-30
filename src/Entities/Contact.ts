@@ -9,6 +9,15 @@ export default class Contact {
   ) {}
 }
 
+export function updateArray(contact: Contact, contacts: Contact[]) {
+  const index = contacts.findIndex((element) => element.id === contact.id);
+  const copy = [...contacts];
+  if (index !== -1) {
+    copy[index] = contact;
+  }
+  return copy;
+}
+
 export const fieldsArr = [
   { field: "name", label: "name" },
   { field: "phone", label: "phone" },

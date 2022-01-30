@@ -64,3 +64,21 @@ export function Avatar({
     ></img>
   );
 }
+
+export function BaseBtn({
+  onClick = () => {},
+  children = "",
+  isDisabled = false,
+  className = "",
+}) {
+  return (
+    <button
+      className={`bg-gray-300 text-cyan-800 font-bold rounded-md pr-2 pl-2  ${
+        isDisabled ? "opacity-50" : ""
+      } ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}

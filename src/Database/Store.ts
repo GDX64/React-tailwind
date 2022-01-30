@@ -1,7 +1,8 @@
-import Contact, { makeFake } from "../Entities/Contact";
+import { useState } from "react";
+import Contact, { makeFake, updateArray } from "../Entities/Contact";
 import AppDatabase from "./AppDatabase";
 
-export default class AppStore {
+class AppStore {
   state = {
     contacts: makeFake(),
   };
@@ -13,15 +14,11 @@ export default class AppStore {
     return { ...this.state };
   }
 
-  async updateContacts(Contact: Contact) {
-    console.log(Contact);
-    const index = this.state.contacts.findIndex(
-      (element) => element.id === Contact.id
-    );
-    if (index !== -1) {
-      this.state.contacts[index] = Contact;
-    }
+  async updateContacts(contact: Contact) {
+    this.state.contacts = updateArray(contact, this.state.contacts);
     await this.dataBase.contacts.bulkPut(this.state.contacts);
     return { ...this.state };
   }
 }
+
+export default new AppStore();

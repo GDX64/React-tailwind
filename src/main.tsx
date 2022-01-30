@@ -5,11 +5,10 @@ import App from "./App";
 import AppStore from "./Database/Store";
 
 async function init() {
-  const store = new AppStore();
-  await store.getStored();
+  await AppStore.getStored();
   ReactDOM.render(
     <React.StrictMode>
-      <App store={store} />
+      <App />
     </React.StrictMode>,
     document.getElementById("root")
   );
