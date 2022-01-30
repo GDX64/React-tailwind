@@ -1,9 +1,11 @@
 import "./App.css";
-import ContractRow from "./components/ContractRow";
+import { ContractsTable } from "./components/ContractRow";
+import { makeFake } from "./Entities/Contract";
+
 function App() {
   return (
     <div className="App flex flex-col items-center">
-      <ContractRow></ContractRow>
+      <ContractsTable contracts={makeFake()}></ContractsTable>
     </div>
   );
 }
