@@ -1,12 +1,44 @@
 import { useState } from "react";
 import Contract from "../Entities/Contract";
-import "./BaseButton.css";
 
 interface ContractRowProps {
   contract: Contract;
   onChange: (state: Contract) => void;
 }
 function ContractRow({ contract, onChange }: ContractRowProps) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="flex flex-col mb-2">
+      <ContractSummary
+        contract={contract}
+        onClick={() => setExpanded(!expanded)}
+      ></ContractSummary>
+      {expanded && (
+        <ContractFullInfo {...{ contract, onChange }}></ContractFullInfo>
+      )}
+    </div>
+  );
+}
+
+function ContractSummary({
+  contract,
+  onClick,
+}: {
+  contract: Contract;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      className="flex w-96 border border-black justify-around cursor-pointer select-none"
+      onClick={onClick}
+    >
+      <div className="">{contract.name}</div>
+      <div className="">{contract.email}</div>
+    </div>
+  );
+}
+
+function ContractFullInfo({ contract, onChange }: ContractRowProps) {
   const [state, updateValue] = useState(contract);
   const hasChanges = JSON.stringify(contract) !== JSON.stringify(state);
   return (
@@ -38,10 +70,10 @@ function Footer({
   return (
     <div className="">
       <BaseBtn onClick={onApply} isDisabled={!hasChanges} className="m-2">
-        Apply Changes
+        Apply
       </BaseBtn>
       <BaseBtn onClick={onCancel} isDisabled={!hasChanges}>
-        CancelChanges
+        Cancel
       </BaseBtn>
     </div>
   );
@@ -55,7 +87,7 @@ function BaseBtn({
 }) {
   return (
     <button
-      className={`bg-gray-300 text-black rounded-md pr-2 pl-2 ${
+      className={`bg-gray-300 text-cyan-800 font-bold rounded-md pr-2 pl-2  ${
         isDisabled ? "opacity-50" : ""
       } ${className}`}
       onClick={onClick}
@@ -70,7 +102,7 @@ export function ContractsTable({
   onChange = (state: Contract) => {},
 }) {
   return (
-    <div className="">
+    <div className="bg-sky-900 text-gray-300 pl-3 pr-3 pt-3 pb-3 rounded-md">
       {contracts.map((contract) => (
         <ContractRow
           contract={contract}
@@ -85,7 +117,10 @@ export function ContractsTable({
 function UpdatableField({ value = "", onChange = (x: string) => {} }) {
   const [isNormal, changeField] = useState(true);
   const normalField = (
-    <div className="" onDoubleClick={() => changeField(!isNormal)}>
+    <div
+      className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer mb-1"
+      onClick={() => changeField(!isNormal)}
+    >
       {value}
     </div>
   );
@@ -99,6 +134,9 @@ function UpdatableField({ value = "", onChange = (x: string) => {} }) {
         }
       }}
       onChange={(event) => onChange(event?.target.value)}
+      onBlur={() => changeField(true)}
+      autoFocus
+      className="bg-gray-800 outline outline-cyan-400 mb-1 rounded-md"
     />
   );
   return isNormal ? normalField : editField;
