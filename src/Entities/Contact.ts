@@ -43,13 +43,5 @@ export function makeFake() {
       0,
       null
     ),
-    new Contact(
-      "Gabriel",
-      "Machado",
-      "gadu.machado@gmail.com",
-      "122345678",
-      1,
-      null
-    ),
   ];
 }
