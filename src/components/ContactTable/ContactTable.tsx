@@ -1,8 +1,13 @@
 import { useState } from "react";
 import Store from "../../Database/Store";
-import Contact, { fieldsArr, updateArray } from "../../Entities/Contact";
+import Contact, { fieldsArr } from "../../Entities/Contact";
 import { readImage } from "../../Utils/ReadImage";
-import { Labeled, UpdatableField, Avatar, BaseBtn } from "../BaseComponents";
+import {
+  Labeled,
+  UpdatableField,
+  Avatar,
+  BaseBtn,
+} from "../BaseComponents/BaseComponents";
 interface ContactRowProps {
   Contact: Contact;
   onChange: (state: Contact) => void;
