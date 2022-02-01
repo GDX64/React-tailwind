@@ -8,7 +8,7 @@ import {
 } from "@testing-library/react";
 import { ContactsTable } from "./ContactTable";
 
-describe("", () => {
+describe("Integration test for the contact table", () => {
   test("there must be one summary", () => {
     render(<ContactsTable />);
     const row1 = screen.getByText(/gabriel/i);
