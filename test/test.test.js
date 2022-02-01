@@ -32,4 +32,16 @@ describe("", () => {
     fireEvent.click(deleteBtn);
     await waitForElementToBeRemoved(() => screen.getAllByText(/gabriel/i));
   });
+  test("Change contact name", async () => {
+    render(<ContactsTable />);
+    const summary = screen.getByText(/joe/i);
+    fireEvent.click(summary);
+    const nameLabel = await waitFor(() => screen.getByText(/name/i));
+    fireEvent.click(nameLabel.nextElementSibling);
+    const input = await waitFor(() => screen.getByRole("textbox"));
+    fireEvent.change(input, { target: { value: "gabriel" } });
+    const saveBtn = screen.getByRole("button", { name: "Save" });
+    fireEvent.click(saveBtn);
+    await waitFor(() => screen.getAllByText(/gabriel/));
+  });
 });
