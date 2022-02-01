@@ -41,7 +41,7 @@ export function makeFake() {
       "gadu.machado@gmail.com",
       "122345678",
       0,
-      null
+      defaultImg
     ),
   ];
 }
