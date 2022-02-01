@@ -8,6 +8,8 @@ import {
 } from "@testing-library/react";
 import { ContactsTable } from "./ContactTable";
 
+//I'm using a fake indexedDB here, so each test loads the previous state of the past one
+//If there was a database state change
 describe("Integration test for the contact table", () => {
   test("there must be one summary", () => {
     render(<ContactsTable />);
