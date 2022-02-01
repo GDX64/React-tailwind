@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import { ContactsTable } from "./components/ContactTable/ContactRow";
-import AppStore from "./Database/Store";
+import { ContactsTable } from "./components/ContactTable/ContactTable";
 
 function App() {
   return (

@@ -6,7 +6,7 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-import { ContactsTable } from "../src/components/ContactTable/ContactRow";
+import { ContactsTable } from "./ContactTable";
 
 describe("", () => {
   test("there must be one summary", () => {
