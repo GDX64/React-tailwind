@@ -15,6 +15,10 @@ export default class Contact {
   }
 }
 
+export function getSearchFields(contact: Contact) {
+  return [contact.name, contact.email, contact.phone];
+}
+
 export function updateArray(contact: Contact, contacts: Contact[]) {
   const index = contacts.findIndex((element) => element.id === contact.id);
   const copy = [...contacts];

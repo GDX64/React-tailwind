@@ -28,7 +28,7 @@ export function UpdatableField({
       onChange={(event) => onChange(event?.target.value)}
       onBlur={() => changeField(true)}
       autoFocus
-      className="bg-gray-800 outline outline-cyan-400 rounded-md"
+      className="contact-input"
     />
   );
   return isNormal ? normalField : editField;

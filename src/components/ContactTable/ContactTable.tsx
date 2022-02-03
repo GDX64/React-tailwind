@@ -1,35 +1,55 @@
 import { useState } from "react";
 import Store from "../../Database/Store";
-import Contact from "../../Entities/Contact";
+import Contact, { getSearchFields } from "../../Entities/Contact";
+import { Labeled } from "../BaseComponents/BaseComponents";
 import { ContactRow } from "./ContactRow";
 
-const contactsPerPage = 2;
+const contactsPerPage = 5;
 
 export function ContactsTable() {
   const [contacts, setContacts] = useState(Store.state.contacts);
   const [pageNumber, setPageNumber] = useState(1);
-  const slice = getSlice(contacts, pageNumber);
+  const [search, setSearch] = useState("");
+  const slice = getSlice(contacts, { pageNumber, search });
   return (
-    <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md">
-      <ContactPage onSetContacts={setContacts} contacts={slice}></ContactPage>
-      <PlusBtn onClick={() => setPageNumber(pageNumber - 1)}>l</PlusBtn>
-      <PlusBtn
-        onClick={async () => {
-          setContacts((await Store.addContact(Contact.default())).contacts);
-        }}
-      >
-        +
-      </PlusBtn>
-      <PlusBtn onClick={() => setPageNumber(pageNumber + 1)}> r </PlusBtn>
+    <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col">
+      <Labeled label="Search">
+        <input
+          type="text"
+          onChange={(event) => setSearch(event.target.value)}
+          value={search}
+          className="mb-3 contact-input"
+        />
+      </Labeled>
+      <div className="flex flex-col justify-around grow">
+        <ContactPage onSetContacts={setContacts} contacts={slice}></ContactPage>
+        <div className="mt-auto">
+          <PlusBtn onClick={() => setPageNumber(pageNumber - 1)}>l</PlusBtn>
+          <PlusBtn
+            onClick={async () => {
+              setContacts((await Store.addContact(Contact.default())).contacts);
+            }}
+          >
+            +
+          </PlusBtn>
+          <PlusBtn onClick={() => setPageNumber(pageNumber + 1)}> r </PlusBtn>
+        </div>
+      </div>
     </div>
   );
 }
 
-function getSlice(contacts: Contact[], pageNumber: number) {
-  return contacts.slice(
-    contactsPerPage * (pageNumber - 1),
-    contactsPerPage * pageNumber
-  );
+function getSlice(
+  contacts: Contact[],
+  { pageNumber, search }: { pageNumber: number; search: string }
+) {
+  return contacts
+    .filter((contact) => {
+      return getSearchFields(contact).some((field) =>
+        field.toLowerCase().includes(search.toLowerCase())
+      );
+    })
+    .slice(contactsPerPage * (pageNumber - 1), contactsPerPage * pageNumber);
 }
 
 function ContactPage({

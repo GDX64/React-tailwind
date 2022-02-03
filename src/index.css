@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.contact-input {
+  @apply bg-gray-800 active:outline outline-1 outline-cyan-400 rounded-md border-none;
+}
