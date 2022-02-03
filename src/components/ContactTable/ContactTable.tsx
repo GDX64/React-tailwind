@@ -44,12 +44,18 @@ function getSlice(
   { pageNumber, search }: { pageNumber: number; search: string }
 ) {
   return contacts
-    .filter((contact) => {
-      return getSearchFields(contact).some((field) =>
-        field.toLowerCase().includes(search.toLowerCase())
-      );
+    .map((contact) => {
+      const matches = getSearchFields(contact)
+        .map(({ field, priority }) =>
+          field.toLowerCase().includes(search.toLowerCase())
+            ? String(priority)
+            : "9"
+        )
+        .join("");
+      return [contact, matches] as [Contact, string];
     })
-    .slice(contactsPerPage * (pageNumber - 1), contactsPerPage * pageNumber);
+    .sort(([, a], [, b]) => (a > b ? 1 : -1))
+    .map(([contact]) => contact);
 }
 
 function ContactPage({

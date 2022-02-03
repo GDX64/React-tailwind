@@ -16,7 +16,11 @@ export default class Contact {
 }
 
 export function getSearchFields(contact: Contact) {
-  return [contact.name, contact.email, contact.phone];
+  return [
+    { priority: 1, field: contact.name },
+    { priority: 2, field: contact.email },
+    { priority: 3, field: contact.phone },
+  ];
 }
 
 export function updateArray(contact: Contact, contacts: Contact[]) {
