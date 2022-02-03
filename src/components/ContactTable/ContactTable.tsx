@@ -1,16 +1,14 @@
 import { useState } from "react";
 import Store from "../../Database/Store";
-import Contact, { getSearchFields } from "../../Entities/Contact";
+import Contact, { getContactSlice } from "../../Entities/Contact";
 import { Labeled } from "../BaseComponents/BaseComponents";
 import { ContactRow } from "./ContactRow";
-
-const contactsPerPage = 5;
 
 export function ContactsTable() {
   const [contacts, setContacts] = useState(Store.state.contacts);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState("");
-  const slice = getSlice(contacts, { pageNumber, search });
+  const slice = getContactSlice(contacts, { pageNumber, search });
   return (
     <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col">
       <Labeled label="Search">
@@ -23,39 +21,31 @@ export function ContactsTable() {
       </Labeled>
       <div className="flex flex-col justify-around grow">
         <ContactPage onSetContacts={setContacts} contacts={slice}></ContactPage>
-        <div className="mt-auto">
-          <PlusBtn onClick={() => setPageNumber(pageNumber - 1)}>l</PlusBtn>
-          <PlusBtn
-            onClick={async () => {
-              setContacts((await Store.addContact(Contact.default())).contacts);
-            }}
-          >
-            +
-          </PlusBtn>
-          <PlusBtn onClick={() => setPageNumber(pageNumber + 1)}> r </PlusBtn>
-        </div>
+        <Footer
+          onAddClick={async () => {
+            setContacts((await Store.addContact(Contact.default())).contacts);
+          }}
+          onPageChange={(delta) => setPageNumber(pageNumber + delta)}
+        ></Footer>
       </div>
     </div>
   );
 }
 
-function getSlice(
-  contacts: Contact[],
-  { pageNumber, search }: { pageNumber: number; search: string }
-) {
-  return contacts
-    .map((contact) => {
-      const matches = getSearchFields(contact)
-        .map(({ field, priority }) =>
-          field.toLowerCase().includes(search.toLowerCase())
-            ? String(priority)
-            : "9"
-        )
-        .join("");
-      return [contact, matches] as [Contact, string];
-    })
-    .sort(([, a], [, b]) => (a > b ? 1 : -1))
-    .map(([contact]) => contact);
+function Footer({
+  onPageChange,
+  onAddClick,
+}: {
+  onPageChange: (x: number) => void;
+  onAddClick: () => void;
+}) {
+  return (
+    <div className="mt-auto">
+      <PlusBtn onClick={() => onPageChange(-1)}>l</PlusBtn>
+      <PlusBtn onClick={onAddClick}>+</PlusBtn>
+      <PlusBtn onClick={() => onPageChange(1)}> r </PlusBtn>
+    </div>
+  );
 }
 
 function ContactPage({

@@ -17,10 +17,30 @@ export default class Contact {
 
 export function getSearchFields(contact: Contact) {
   return [
-    { priority: 1, field: contact.name },
-    { priority: 2, field: contact.email },
-    { priority: 3, field: contact.phone },
+    { priority: "01", field: contact.name },
+    { priority: "02", field: contact.email },
+    { priority: "03", field: contact.phone },
   ];
+}
+
+const contactsPerPage = 5;
+
+export function getContactSlice(
+  contacts: Contact[],
+  { pageNumber, search }: { pageNumber: number; search: string }
+) {
+  return contacts
+    .map((contact) => {
+      const matches = getSearchFields(contact)
+        .map(({ field, priority }) =>
+          field.toLowerCase().includes(search.toLowerCase()) ? priority : "99"
+        )
+        .join("");
+      return [contact, matches] as [Contact, string];
+    })
+    .sort(([, a], [, b]) => (a > b ? 1 : -1))
+    .map(([contact]) => contact)
+    .slice(contactsPerPage * (pageNumber - 1), contactsPerPage);
 }
 
 export function updateArray(contact: Contact, contacts: Contact[]) {
