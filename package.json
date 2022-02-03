@@ -5,7 +5,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "start": "serve ./dist"
   },
   "dependencies": {
     "@babel/preset-env": "^7.16.11",
@@ -20,6 +21,7 @@
     "react-dom": "^17.0.2",
     "react-test-renderer": "^17.0.2",
     "regenerator-runtime": "^0.13.9",
+    "serve": "^13.0.2",
     "vite-plugin-checker": "^0.3.4"
   },
   "devDependencies": {
