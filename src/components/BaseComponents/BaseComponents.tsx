@@ -3,21 +3,25 @@ import { useState } from "react";
 export function UpdatableField({
   value,
   onChange,
+  id = "",
 }: {
   value: number | string;
   onChange: (x: string) => void;
+  id?: string;
 }) {
   const [isNormal, changeField] = useState(true);
   const normalField = (
     <div
       className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer pr-1 pl-1 rounded-md transition-all w-full min-h-[20px]"
       onClick={() => changeField(!isNormal)}
+      id={id}
     >
       {value}
     </div>
   );
   const editField = (
     <input
+      id={id}
       type="text"
       value={value}
       onKeyPress={(event) => {
@@ -38,14 +42,18 @@ export function Labeled({
   children,
   label,
   className = "",
+  htmlFor = "",
 }: {
   children: JSX.Element;
   label: string;
   className?: string;
+  htmlFor?: string;
 }) {
   return (
     <div className={`flex ${className}`}>
-      <label className={`mr-1 text-gray-500`}>{label}:</label>
+      <label className={`mr-1 text-gray-500`} htmlFor={htmlFor}>
+        {label}:
+      </label>
       {children}
     </div>
   );

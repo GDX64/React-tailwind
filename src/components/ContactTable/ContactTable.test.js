@@ -40,7 +40,7 @@ describe("Integration test for the contact table", () => {
     fireEvent.click(summary);
     const nameLabel = await waitFor(() => screen.getByText(/name/i));
     fireEvent.click(nameLabel.nextElementSibling);
-    const input = await waitFor(() => screen.getByRole("textbox"));
+    const input = await waitFor(() => screen.getByLabelText("name:"));
     fireEvent.change(input, { target: { value: "gabriel" } });
     const saveBtn = screen.getByRole("button", { name: "Save" });
     fireEvent.click(saveBtn);

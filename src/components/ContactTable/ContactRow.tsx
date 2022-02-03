@@ -77,17 +77,23 @@ function ContactFullInfo({ Contact, onChange, onDelete }: ContactRowProps) {
   );
 }
 
-function getAllFields(state: Contact, updateValue: (contact: Contact) => void) {
+function getAllFields(
+  contact: Contact,
+  updateValue: (contact: Contact) => void
+) {
   return fieldsArr.map(({ field, label }) => {
+    const id = `${field}-${label}-${contact.id}`;
     return (
       <Labeled
         label={label}
         key={field}
         className="border-b border-b-sky-800 w-full h-10 items-center"
+        htmlFor={id}
       >
         <UpdatableField
-          value={state[field]}
-          onChange={(value) => updateValue({ ...state, [field]: value })}
+          value={contact[field]}
+          onChange={(value) => updateValue({ ...contact, [field]: value })}
+          id={id}
         ></UpdatableField>
       </Labeled>
     );

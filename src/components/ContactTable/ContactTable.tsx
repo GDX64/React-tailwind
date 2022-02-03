@@ -11,12 +11,13 @@ export function ContactsTable() {
   const slice = getContactSlice(contacts, { pageNumber, search });
   return (
     <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col">
-      <Labeled label="Search">
+      <Labeled label="Search" htmlFor="main-search">
         <input
           type="text"
           onChange={(event) => setSearch(event.target.value)}
           value={search}
           className="mb-3 contact-input"
+          id="main-search"
         />
       </Labeled>
       <div className="flex flex-col justify-around grow">
