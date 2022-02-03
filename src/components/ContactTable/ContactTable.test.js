@@ -18,7 +18,7 @@ describe("Integration test for the contact table", () => {
   });
   test("When you click the add btn you must have another contact with default name", async () => {
     render(<ContactsTable />);
-    const addBtn = screen.getByRole("button");
+    const addBtn = screen.getByRole("button", { name: "+" });
     fireEvent.click(addBtn);
     const row = await waitFor(() => screen.getByText(/joe/i));
     expect(row).toBeTruthy();
