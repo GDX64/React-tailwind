@@ -15,13 +15,13 @@ class AppStore {
 
   updateContacts(state: StoreState, contact: Contact) {
     this.state.contacts = updateArray(contact, state.contacts);
-    this.dataBase.contacts.bulkPut(this.state.contacts);
+    this.updateDataBaseState(this.state.contacts);
     return { ...this.state };
   }
 
   addContact(state: StoreState, contact: Contact) {
     this.state.contacts = [contact, ...state.contacts];
-    this.dataBase.contacts.bulkPut(this.state.contacts);
+    this.updateDataBaseState(this.state.contacts);
     return { ...this.state };
   }
 
@@ -29,8 +29,13 @@ class AppStore {
     this.state.contacts = state.contacts.filter(
       (element) => element.id !== contact.id
     );
-    this.dataBase.contacts.delete(contact.id);
+    this.updateDataBaseState(this.state.contacts);
     return { ...this.state };
+  }
+
+  private async updateDataBaseState(contacts: Contact[]) {
+    await this.dataBase.contacts.clear();
+    return this.dataBase.contacts.bulkPut(contacts);
   }
 }
 
