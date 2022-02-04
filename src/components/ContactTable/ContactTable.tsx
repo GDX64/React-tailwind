@@ -1,6 +1,10 @@
 import { useReducer, useState } from "react";
 import Store, { reducer, StoreAction } from "../../Database/Store";
-import Contact, { getContactSlice } from "../../Entities/Contact";
+import Contact, {
+  calcMaxPageNumbers,
+  getContactSlice,
+} from "../../Entities/Contact";
+import { clamp } from "../../Utils/NumberUtils";
 import { Labeled } from "../BaseComponents/BaseComponents";
 import { ContactRow } from "./ContactRow";
 
@@ -10,6 +14,7 @@ export function ContactsTable() {
   const [search, setSearch] = useState("");
   const contacts = state.contacts;
   const slice = getContactSlice(contacts, { pageNumber, search });
+  const maxPages = calcMaxPageNumbers(slice.length);
   return (
     <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col">
       <Labeled label="Search" htmlFor="main-search">
@@ -27,7 +32,9 @@ export function ContactsTable() {
           onAddClick={() =>
             updateStore({ type: "add", contact: Contact.default() })
           }
-          onPageChange={(delta) => setPageNumber(pageNumber + delta)}
+          onPageChange={(delta) =>
+            setPageNumber(clamp(1, maxPages, pageNumber + delta))
+          }
         ></Footer>
       </div>
     </div>
@@ -42,10 +49,10 @@ function Footer({
   onAddClick: () => void;
 }) {
   return (
-    <div className="mt-auto">
-      <PlusBtn onClick={() => onPageChange(-1)}>l</PlusBtn>
-      <PlusBtn onClick={onAddClick}>+</PlusBtn>
-      <PlusBtn onClick={() => onPageChange(1)}> r </PlusBtn>
+    <div className="mt-auto flex justify-between">
+      <PlusBtn onClick={() => onPageChange(-1)}> &#8592; </PlusBtn>
+      <PlusBtn onClick={onAddClick}> &#43; </PlusBtn>
+      <PlusBtn onClick={() => onPageChange(1)}> &#8594; </PlusBtn>
     </div>
   );
 }

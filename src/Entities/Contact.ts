@@ -50,6 +50,10 @@ export function getContactSlice(
     .slice(contactsPerPage * (pageNumber - 1), contactsPerPage * pageNumber);
 }
 
+export function calcMaxPageNumbers(numberOfContacts: number) {
+  return Math.ceil(numberOfContacts / CONTACTS_PERPAGE);
+}
+
 function noLowestPriority([, key]: [any, string]) {
   return Boolean(key.match(/[0-8]/));
 }
