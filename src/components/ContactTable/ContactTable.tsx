@@ -50,9 +50,13 @@ function Footer({
 }) {
   return (
     <div className="mt-auto flex justify-between">
-      <PlusBtn onClick={() => onPageChange(-1)}> &#8592; </PlusBtn>
-      <PlusBtn onClick={onAddClick}> &#43; </PlusBtn>
-      <PlusBtn onClick={() => onPageChange(1)}> &#8594; </PlusBtn>
+      <NavigationBTN onClick={() => onPageChange(-1)} id="navigation-left">
+        &#8592;
+      </NavigationBTN>
+      <NavigationBTN onClick={onAddClick}> &#43; </NavigationBTN>
+      <NavigationBTN onClick={() => onPageChange(1)} id="navigation-right">
+        &#8594;
+      </NavigationBTN>
     </div>
   );
 }
@@ -76,10 +80,11 @@ function ContactPage({
   );
 }
 
-function PlusBtn({ onClick = () => {}, children = "" }) {
+function NavigationBTN({ onClick = () => {}, children = "", id = "" }) {
   return (
     <button
       onClick={onClick}
+      id={id}
       className="rounded-full bg-gray-700 h-8 w-8 text-xl hover:scale-110 transition-all hover:bg-gray-600"
     >
       {children}

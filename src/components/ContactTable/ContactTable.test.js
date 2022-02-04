@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ContactsTable } from "./ContactTable";
+import Store from "../../Database/Store";
+import Contact from "../../Entities/Contact";
 
 //I'm using a fake indexedDB here, so each test loads the previous state of the past one
 //If there was a database state change
@@ -45,5 +41,35 @@ describe("Integration test for the contact table", () => {
     const saveBtn = screen.getByRole("button", { name: "Save" });
     fireEvent.click(saveBtn);
     await waitFor(() => screen.getAllByText(/gabriel/));
+  });
+});
+
+const arrowRight = "\u2192";
+const arrowLeft = "\u2190";
+const setStoreState = () => {
+  Store.state.contacts = [
+    Contact.default({ name: "joe" }),
+    ...[...Array(10)].map(() => Contact.default({ name: "gabriel" })),
+  ];
+};
+
+describe("Testing searchbar and navigation", () => {
+  test("Query joe should show only joe", () => {
+    setStoreState();
+    render(<ContactsTable />);
+    const input = screen.getByLabelText("Search:");
+    fireEvent.change(input, { target: { value: "joe" } });
+    expect(screen.getByText("joe")).toBeTruthy();
+    expect(screen.queryByText("gabriel")).toBeFalsy();
+  });
+  test("Should not have joe and only 5 gabriels", async () => {
+    setStoreState();
+    render(<ContactsTable />);
+    const btnRight = screen.getByRole("button", { name: arrowRight });
+    fireEvent.click(btnRight);
+    await waitFor(() => screen.getAllByText(/gabriel/).length === 5);
+    const btnLeft = screen.getByRole("button", { name: arrowLeft });
+    fireEvent.click(btnLeft);
+    await waitFor(() => screen.getAllByText(/gabriel/).length === 4);
   });
 });
