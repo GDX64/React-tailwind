@@ -3,15 +3,14 @@ const defaultImg = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAA
 export default class Contact {
   constructor(
     public name: string,
-    public lastName: string,
     public email: string,
     public phone: string,
     public id: number,
     public image: string | null
   ) {}
 
-  static default() {
-    return new Contact("Joe", "", "", "", Math.random(), defaultImg);
+  static default({ name = "joe", email = "", phone = "" } = {}) {
+    return new Contact(name, email, phone, Math.random(), defaultImg);
   }
 }
 
@@ -23,24 +22,36 @@ export function getSearchFields(contact: Contact) {
   ];
 }
 
-const contactsPerPage = 5;
+const CONTACTS_PERPAGE = 5;
+const LOWEST_PRIORITY = "99";
 
 export function getContactSlice(
   contacts: Contact[],
-  { pageNumber, search }: { pageNumber: number; search: string }
+  {
+    pageNumber,
+    search,
+    contactsPerPage = CONTACTS_PERPAGE,
+  }: { pageNumber: number; search: string; contactsPerPage?: number }
 ) {
   return contacts
     .map((contact) => {
       const matches = getSearchFields(contact)
         .map(({ field, priority }) =>
-          field.toLowerCase().includes(search.toLowerCase()) ? priority : "99"
+          field.toLowerCase().includes(search.toLowerCase())
+            ? priority
+            : LOWEST_PRIORITY
         )
         .join("");
       return [contact, matches] as [Contact, string];
     })
-    .sort(([, a], [, b]) => (a > b ? 1 : -1))
+    .filter(noLowestPriority)
+    .sort(([, a], [, b]) => (a === b ? 0 : a > b ? 1 : -1))
     .map(([contact]) => contact)
-    .slice(contactsPerPage * (pageNumber - 1), contactsPerPage);
+    .slice(contactsPerPage * (pageNumber - 1), contactsPerPage * pageNumber);
+}
+
+function noLowestPriority([, key]: [any, string]) {
+  return Boolean(key.match(/[0-8]/));
 }
 
 export function updateArray(contact: Contact, contacts: Contact[]) {
@@ -65,7 +76,6 @@ export function makeFake() {
   return [
     new Contact(
       "Gabriel",
-      "Machado",
       "gadu.machado@gmail.com",
       "122345678",
       0,
