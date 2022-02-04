@@ -32,7 +32,7 @@ describe("Integration test for the contact table", () => {
       screen.getByRole("button", { name: "Delete" })
     );
     fireEvent.click(deleteBtn);
-    await waitForElementToBeRemoved(() => screen.getAllByText(/gabriel/i));
+    expect(screen.queryAllByText(/gabriel/i)).toHaveLength(0);
   });
   test("Change contact name", async () => {
     render(<ContactsTable />);

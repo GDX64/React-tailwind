@@ -1,13 +1,14 @@
-import { useState } from "react";
-import Store from "../../Database/Store";
+import { useReducer, useState } from "react";
+import Store, { reducer, StoreAction } from "../../Database/Store";
 import Contact, { getContactSlice } from "../../Entities/Contact";
 import { Labeled } from "../BaseComponents/BaseComponents";
 import { ContactRow } from "./ContactRow";
 
 export function ContactsTable() {
-  const [contacts, setContacts] = useState(Store.state.contacts);
+  const [state, updateStore] = useReducer(reducer, Store.state);
   const [pageNumber, setPageNumber] = useState(1);
   const [search, setSearch] = useState("");
+  const contacts = state.contacts;
   const slice = getContactSlice(contacts, { pageNumber, search });
   return (
     <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col">
@@ -21,11 +22,11 @@ export function ContactsTable() {
         />
       </Labeled>
       <div className="flex flex-col justify-around grow">
-        <ContactPage onSetContacts={setContacts} contacts={slice}></ContactPage>
+        <ContactPage updateStore={updateStore} contacts={slice}></ContactPage>
         <Footer
-          onAddClick={async () => {
-            setContacts((await Store.addContact(Contact.default())).contacts);
-          }}
+          onAddClick={() =>
+            updateStore({ type: "add", contact: Contact.default() })
+          }
           onPageChange={(delta) => setPageNumber(pageNumber + delta)}
         ></Footer>
       </div>
@@ -51,18 +52,14 @@ function Footer({
 
 function ContactPage({
   contacts = [] as Contact[],
-  onSetContacts = (contacts: Contact[]) => {},
+  updateStore = (action: StoreAction) => {},
 }) {
   const contactsArr = contacts.map((Contact) => (
     <ContactRow
       Contact={Contact}
       key={Contact.id}
-      onChange={async (contact) =>
-        onSetContacts((await Store.updateContacts(contact)).contacts)
-      }
-      onDelete={async (contact) => {
-        onSetContacts((await Store.deleteContact(contact)).contacts);
-      }}
+      onChange={(contact) => updateStore({ type: "update", contact })}
+      onDelete={(contact) => updateStore({ type: "del", contact })}
     ></ContactRow>
   ));
   return (

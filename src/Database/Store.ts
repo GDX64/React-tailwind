@@ -13,25 +13,59 @@ class AppStore {
     return { ...this.state };
   }
 
-  async updateContacts(contact: Contact) {
-    this.state.contacts = updateArray(contact, this.state.contacts);
-    await this.dataBase.contacts.bulkPut(this.state.contacts);
+  updateContacts(state: StoreState, contact: Contact) {
+    this.state.contacts = updateArray(contact, state.contacts);
+    this.dataBase.contacts.bulkPut(this.state.contacts);
     return { ...this.state };
   }
 
-  async addContact(contact: Contact) {
-    this.state.contacts = [contact, ...this.state.contacts];
-    await this.dataBase.contacts.bulkPut(this.state.contacts);
+  addContact(state: StoreState, contact: Contact) {
+    this.state.contacts = [contact, ...state.contacts];
+    this.dataBase.contacts.bulkPut(this.state.contacts);
     return { ...this.state };
   }
 
-  async deleteContact(contact: Contact) {
-    this.state.contacts = this.state.contacts.filter(
+  deleteContact(state: StoreState, contact: Contact) {
+    this.state.contacts = state.contacts.filter(
       (element) => element.id !== contact.id
     );
-    await this.dataBase.contacts.delete(contact.id);
+    this.dataBase.contacts.delete(contact.id);
     return { ...this.state };
   }
 }
 
-export default new AppStore();
+type StoreState = AppStore["state"];
+
+const Store = new AppStore();
+
+export function reducer(state: StoreState, action: StoreAction) {
+  if (action.type === "add") {
+    return Store.addContact(state, action.contact);
+  }
+  if (action.type === "del") {
+    return Store.deleteContact(state, action.contact);
+  }
+  if (action.type === "update") {
+    return Store.updateContacts(state, action.contact);
+  }
+  throw Error(`Unkown action ${action}`);
+}
+
+export type StoreAction = Add | Delete | Update;
+
+type Add = {
+  type: "add";
+  contact: Contact;
+};
+
+type Delete = {
+  type: "del";
+  contact: Contact;
+};
+
+type Update = {
+  type: "update";
+  contact: Contact;
+};
+
+export default Store;
