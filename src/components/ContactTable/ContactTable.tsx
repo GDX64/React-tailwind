@@ -16,7 +16,7 @@ export function ContactsTable() {
   const slice = getContactSlice(contacts, { pageNumber, search });
   const maxPages = calcMaxPageNumbers(slice.length);
   return (
-    <div className="bg-sky-900 text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col">
+    <div className="text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col table-gradient">
       <Labeled label="Search" htmlFor="main-search">
         <input
           type="text"
@@ -85,7 +85,7 @@ function NavigationBTN({ onClick = () => {}, children = "", id = "" }) {
     <button
       onClick={onClick}
       id={id}
-      className="rounded-full bg-gray-700 h-8 w-8 text-xl hover:scale-110 transition-all hover:bg-gray-600"
+      className="rounded-md outline-gray-500 outline outline-1 px-3 py-1 hover:scale-110 transition-all hover:bg-gray-900 font-bold"
     >
       {children}
     </button>

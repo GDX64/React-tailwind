@@ -39,7 +39,9 @@ function ContactSummary({
 }) {
   return (
     <div
-      className="flex w-96 border-2 border-sky-800 justify-around cursor-pointer select-none pt-1 pb-1 items-center"
+      className="flex w-96 border-2 border-sky-800 justify-around cursor-pointer 
+      select-none pt-1 pb-1 items-center 
+      hover:bg-sky-800 transition-all"
       onClick={onClick}
     >
       <Avatar
