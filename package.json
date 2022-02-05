@@ -23,8 +23,6 @@
     "vite-plugin-checker": "^0.3.4",
     "react-test-renderer": "^17.0.2",
     "regenerator-runtime": "^0.13.9",
-    "@nomiclabs/hardhat-ethers": "^2.0.4",
-    "@nomiclabs/hardhat-waffle": "^2.0.2",
     "@testing-library/react": "^12.1.2",
     "@types/jest": "^27.4.0",
     "@types/react": "^17.0.33",
