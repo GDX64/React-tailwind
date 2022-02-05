@@ -9,3 +9,7 @@
 .table-gradient {
   background-image: linear-gradient(to top, #093e5a, #032c42);
 }
+
+.default-btn {
+  @apply rounded-md outline-gray-500 outline outline-1 hover:scale-105 transition-all hover:bg-gray-900 font-bold;
+}

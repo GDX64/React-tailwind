@@ -128,8 +128,8 @@ export function BaseBtn({
 }) {
   return (
     <button
-      className={`bg-gray-300 text-cyan-800 font-bold rounded-md pr-2 pl-2  ${
-        isDisabled ? "opacity-50" : ""
+      className={`default-btn  ${
+        isDisabled ? "opacity-50 pointer-events-none" : ""
       } ${className}`}
       onClick={onClick}
     >
