@@ -14,7 +14,7 @@ export function ContactsTable() {
   const [search, setSearch] = useState("");
   const contacts = state.contacts;
   const slice = getContactSlice(contacts, { pageNumber, search });
-  const maxPages = calcMaxPageNumbers(slice.length);
+  const maxPages = calcMaxPageNumbers(contacts.length);
   return (
     <div className="text-gray-400 pl-3 pr-3 pt-3 pb-3 rounded-md min-h-[410px] min-w-[410px] flex flex-col table-gradient">
       <Labeled label="Search" htmlFor="main-search">

@@ -67,9 +67,9 @@ describe("Testing searchbar and navigation", () => {
     render(<ContactsTable />);
     const btnRight = screen.getByRole("button", { name: arrowRight });
     fireEvent.click(btnRight);
-    await waitFor(() => screen.getAllByText(/gabriel/).length === 5);
+    expect(screen.getAllByText(/gabriel/)).toHaveLength(5);
     const btnLeft = screen.getByRole("button", { name: arrowLeft });
     fireEvent.click(btnLeft);
-    await waitFor(() => screen.getAllByText(/gabriel/).length === 4);
+    expect(screen.getAllByText(/gabriel/)).toHaveLength(4);
   });
 });
