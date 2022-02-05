@@ -1,15 +1,19 @@
-# Basic Sample Hardhat Project
+# Super Contacts List
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
+This application is a contact managing helper. You can use it to add, update and delete contacts.
+The information will be saved locally in your browser and is going to persist across sessions
 
-Try running some of the following tasks:
+You can change the name, email, phone, age and photo of your contacts.
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
+## Finding your contacts
+
+You can navigate throught the pages using the arrows, or search with the search bar. The search bar is going to query for name, phone and email in this order. So if your search matches a contact name, and a contact email, it is going to rank the one that matched the name first.
+
+
+## Technologies used
+
+I used pure React and Tailwind to build the UI. The tests are made with jest, and the data is saved to the indexedDB with Dexie.
+
+## State managment
+
+The state is managed by a reducer in the store file. Each state update is saved to the indexedDB, but will only be read before initializing the app. All the state updates are sync. But we could use something like a thunk and redux to manage the store, if we needed to make async calls to some API before updating in some situations.
