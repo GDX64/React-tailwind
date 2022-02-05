@@ -17,3 +17,7 @@ I used pure React and Tailwind to build the UI. The tests are made with jest, an
 ## State managment
 
 The state is managed by a reducer in the store file. Each state update is saved to the indexedDB, but will only be read before initializing the app. All the state updates are sync. But we could use something like a thunk and redux to manage the store, if we needed to make async calls to some API before updating in some situations.
+
+## Deployment
+
+This app is deployed to heroku after a push to the master branch and the jest tests run by the github actions.
