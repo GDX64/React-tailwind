@@ -22,3 +22,7 @@ The state is managed by a reducer in the store file. Each state update is saved 
 
 This app is deployed to heroku after a push to the master branch and the jest tests run by the github actions.
 the project can be accessed here https://super-contacts-app.herokuapp.com/
+
+## Building in development
+
+You can run `npm run dev` to a development build and `npm run test` to run all the unit tests. `npm run build` and `npm run start` are the commands used in production to launch the application. 
