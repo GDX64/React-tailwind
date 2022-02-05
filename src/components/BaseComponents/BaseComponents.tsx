@@ -33,7 +33,7 @@ export function UpdatableField({
   return isNormal ? normalField : editField;
 }
 
-function NumberInput({
+export function NumberInput({
   toggleKind = () => {},
   id = "",
   value = 0 as number | string,
@@ -50,7 +50,7 @@ function NumberInput({
       step={step}
       min={minAge}
       max={maxage}
-      value={value}
+      value={parseString(value)}
       onKeyPress={(event) => {
         if (event.key === "Enter") toggleKind();
       }}

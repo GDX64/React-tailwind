@@ -6,8 +6,23 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-import { UpdatableField } from "./BaseComponents";
+import { NumberInput, UpdatableField } from "./BaseComponents";
 
+describe("Testing NumberInput", () => {
+  test("It should not be possible to put negative numbers nor fractions", () => {
+    const fn = jest.fn();
+    render(<NumberInput value={-30} onChange={fn}></NumberInput>);
+    const input = screen.getByDisplayValue("0");
+    fireEvent.change(input, { target: { value: "-30" } });
+    expect(fn).toBeCalledWith(0);
+    fireEvent.change(input, { target: { value: "30" } });
+    expect(fn).toBeCalledWith(30);
+    fireEvent.change(input, { target: { value: "31.5" } });
+    expect(fn).toBeCalledWith(31);
+    fireEvent.change(input, { target: { value: "160" } });
+    expect(fn).toBeCalledWith(150);
+  });
+});
 describe("Unit test for the UpdatableField", () => {
   test("It should show the prop value", () => {
     render(<UpdatableField value="gabriel" onChange={() => {}} />);
