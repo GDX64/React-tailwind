@@ -12,7 +12,7 @@ You can navigate throught the pages using the arrows, or search with the search 
 
 ## Technologies used
 
-I used pure React and Tailwind to build the UI. The tests are made with jest, and the data is saved to the indexedDB with Dexie.
+I've used pure React and Tailwind to build the UI. The tests are made with jest, and the data is saved to the indexedDB with Dexie. I've used Vite as bundler (It also does the type-checking).
 
 ## State managment
 
@@ -21,3 +21,4 @@ The state is managed by a reducer in the store file. Each state update is saved 
 ## Deployment
 
 This app is deployed to heroku after a push to the master branch and the jest tests run by the github actions.
+the project can be accessed here https://super-contacts-app.herokuapp.com/
