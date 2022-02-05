@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { pipe } from "../../Utils/FunctionUtils";
+import { clamp } from "../../Utils/NumberUtils";
 
 export function UpdatableField({
   value,
@@ -6,36 +8,79 @@ export function UpdatableField({
   id = "",
 }: {
   value: number | string;
-  onChange: (x: string) => void;
+  onChange: (x: string | number) => void;
   id?: string;
 }) {
   const [isNormal, changeField] = useState(true);
   const normalField = (
     <div
       className="hover:bg-sky-700 hover:text-gray-200 cursor-pointer pr-1 pl-1 rounded-md transition-all w-full min-h-[20px]"
-      onClick={() => changeField(!isNormal)}
+      onClick={() => changeField(false)}
       id={id}
     >
       {value}
     </div>
   );
+  const InputType = typeof value === "number" ? NumberInput : TextInput;
   const editField = (
+    <InputType
+      id={id}
+      value={value}
+      toggleKind={() => changeField(true)}
+      onChange={onChange}
+    />
+  );
+  return isNormal ? normalField : editField;
+}
+
+function NumberInput({
+  toggleKind = () => {},
+  id = "",
+  value = 0 as number | string,
+  onChange = (x: number | string) => {},
+}) {
+  const minAge = 0;
+  const maxage = 150;
+  const step = 1;
+  const parseString = pipe(Number, Math.floor, (x) => clamp(minAge, maxage, x));
+  return (
+    <input
+      id={id}
+      type="number"
+      step={step}
+      min={minAge}
+      max={maxage}
+      value={value}
+      onKeyPress={(event) => {
+        if (event.key === "Enter") toggleKind();
+      }}
+      onChange={(event) => onChange(parseString(event.target.value))}
+      onBlur={toggleKind}
+      autoFocus
+      className="contact-input"
+    />
+  );
+}
+function TextInput({
+  toggleKind = () => {},
+  id = "",
+  value = "" as number | string,
+  onChange = (x: string | number) => {},
+}) {
+  return (
     <input
       id={id}
       type="text"
       value={value}
       onKeyPress={(event) => {
-        if (event.key === "Enter") {
-          changeField(!isNormal);
-        }
+        if (event.key === "Enter") toggleKind();
       }}
-      onChange={(event) => onChange(event?.target.value)}
-      onBlur={() => changeField(true)}
+      onChange={(event) => onChange(event.target.value)}
+      onBlur={toggleKind}
       autoFocus
       className="contact-input"
     />
   );
-  return isNormal ? normalField : editField;
 }
 
 export function Labeled({

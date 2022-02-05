@@ -5,12 +5,13 @@ export default class Contact {
     public name: string,
     public email: string,
     public phone: string,
+    public age: number,
     public id: number,
     public image: string | null
   ) {}
 
-  static default({ name = "joe", email = "", phone = "" } = {}) {
-    return new Contact(name, email, phone, Math.random(), defaultImg);
+  static default({ name = "joe", email = "", phone = "", age = 1 } = {}) {
+    return new Contact(name, email, phone, age, Math.random(), defaultImg);
   }
 }
 
@@ -68,11 +69,12 @@ export function updateArray(contact: Contact, contacts: Contact[]) {
 }
 
 export const fieldsArr = [
-  { field: "name", label: "name" },
-  { field: "phone", label: "phone" },
-  { field: "email", label: "email" },
+  { field: "name", label: "Name" },
+  { field: "phone", label: "Phone" },
+  { field: "email", label: "Email" },
+  { field: "age", label: "Age" },
 ] as {
-  field: "name" | "phone" | "email";
+  field: "name" | "phone" | "email" | "age";
   label: string;
 }[];
 
@@ -82,6 +84,7 @@ export function makeFake() {
       "Gabriel",
       "gadu.machado@gmail.com",
       "122345678",
+      0,
       0,
       defaultImg
     ),
