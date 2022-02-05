@@ -44,7 +44,7 @@ type StoreState = AppStore["state"];
 const Store = new AppStore();
 
 /**
- * every time I calculate another state, it is saved on the indexedDB, so technically this reducer
+ * Every time I calculate another state, it is saved on the indexedDB, so technically this reducer
  * has a side effect, but it can't influence the program runing, since I can only read the database
  * when the app starts
  */

@@ -1,3 +1,6 @@
+/**
+ * Function composition with very good performance
+ */
 export function pipe<T, K, G, H>(
   f1: (x: T) => K,
   f2: (x: K) => G,
